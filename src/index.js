@@ -56,15 +56,15 @@ class Game extends React.Component {
       xIsNext: true,
       squareNumber: 0,
       doMove: false,
-      deleteSquare: null
+      deleteSquare: null,
     };
   }
 
   handleClick(i) {
+    const history = this.state.history.slice(0, this.state.stepNumber + 1);
+    const current = history[history.length - 1];
+    const squares = current.squares.slice();
     if (this.state.squareNumber < 6) {
-      const history = this.state.history.slice(0, this.state.stepNumber + 1);
-      const current = history[history.length - 1];
-      const squares = current.squares.slice();
       const num = this.state.squareNumber + 1;
 
       if (calculateWinner(squares) || squares[i]) {
@@ -85,10 +85,18 @@ class Game extends React.Component {
       });
     }
     else {
-      this.setState({
-        doMove: true,
-        deleteSquare: i
-      });
+      const currentSquare = this.state.xIsNext ? "X" : "O";
+      if (squares[i] === currentSquare) {
+        this.setState({
+          doMove: true,
+          deleteSquare: i
+        });
+      }
+      else {
+        this.setState({
+          doMove: false
+        });
+      }
     }
   }
 

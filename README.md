@@ -1,3 +1,8 @@
+React web app game based on terni lapilli, a board game that was popular in Ancient Rome.
+The game is similar to tic tac toe but differs in that after your first 3 moves you can only move your pieces (not add new ones). You can move vertically, horizontally, or diagonally. Furthermore, if one of your pieces is in the center square, you either win or must move it out of the center the next turn
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

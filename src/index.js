@@ -92,7 +92,14 @@ class Game extends React.Component {
     }
   }
 
+  //set old square to null and update new square 
   moveSquare(oldSquare, newSquare) {
+    
+    alert("hi");
+    this.setState({
+
+       });
+    /*
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
@@ -113,12 +120,14 @@ class Game extends React.Component {
        stepNumber: history.length,
        xIsNext: !this.state.xIsNext,
      });
+     */
   }
 
   jumpTo(step) {
     this.setState({
       stepNumber: step,
-      xIsNext: (step % 2) === 0
+      xIsNext: (step % 2) === 0,
+      squareNumber: step
     });
   }
 
@@ -145,20 +154,38 @@ class Game extends React.Component {
       status = "Next player: " + (this.state.xIsNext ? "X" : "O");
     }
 
-    return (
-      <div className="game">
-        <div className="game-board">
-          <Board
-            squares={current.squares}
-            onClick={i => this.handleClick(i)}
-          />
+    if (this.state.doMove) {
+      return (
+        <div className="game">
+          <div className="game-board">
+            <Board
+              squares={current.squares}
+              onClick={i => this.moveSquare(this.state.deleteSquare, i)}
+            />
+          </div>
+          <div className="game-info">
+            <div>{status}</div>
+            <ol>{moves}</ol>
+          </div>
         </div>
-        <div className="game-info">
-          <div>{status}</div>
-          <ol>{moves}</ol>
+      );
+    }
+    else {
+      return (
+        <div className="game">
+          <div className="game-board">
+            <Board
+              squares={current.squares}
+              onClick={i => this.handleClick(i)}
+            />
+          </div>
+          <div className="game-info">
+            <div>{status}</div>
+            <ol>{moves}</ol>
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 }
 

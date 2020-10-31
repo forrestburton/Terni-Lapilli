@@ -104,7 +104,9 @@ class Game extends React.Component {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
-    const currentSquare = this.state.xIsNext ? "X" : "O";
+
+    if(validMove(squares, oldSquare, newSquare)) {
+      const currentSquare = this.state.xIsNext ? "X" : "O";
 
     if (squares[4] === currentSquare) {
       const squaresCopy = current.squares.slice();
@@ -153,7 +155,13 @@ class Game extends React.Component {
        xIsNext: !this.state.xIsNext,
        doMove: false
      });
-     
+    }
+    else {
+      this.setState({
+        doMove: false
+      });
+      return;
+    }
   }
 
 
@@ -245,4 +253,30 @@ function calculateWinner(squares) {
     }
   }
   return null;
+}
+
+function validMove(squares, oldMove, newMove) {
+  const lines = [
+    [0, 1, 3, 4],
+    [1, 0, 2, 3, 4, 5],
+    [2, 1, 4, 5],
+    [3, 0, 6, 1, 4, 7],
+    [4, 0, 1, 2, 3, 5, 6, 7, 8],
+    [5, 2, 8, 1, 4, 7],
+    [6, 3, 4, 7],
+    [7, 6, 8, 3, 4, 5],
+    [8, 4, 7, 5]
+  ];
+  for (let i = 0; i < lines.length; i++) {
+    const currLine = lines[i];
+
+    if (currLine[0] === oldMove) {
+      const currlength = currLine.length;
+      for (let j = 1; j < currlength; j++) {
+        if (newMove === currLine[j])
+          return true;
+      }
+    }
+  }
+  return false;
 }

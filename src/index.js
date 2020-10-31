@@ -53,27 +53,66 @@ class Game extends React.Component {
         }
       ],
       stepNumber: 0,
-      xIsNext: true
+      xIsNext: true,
+      squareNumber: 0,
+      doMove: false,
+      deleteSquare: null
     };
   }
 
   handleClick(i) {
-    const history = this.state.history.slice(0, this.state.stepNumber + 1);
-    const current = history[history.length - 1];
-    const squares = current.squares.slice();
-    if (calculateWinner(squares) || squares[i]) {
-      return;
-    }
-    squares[i] = this.state.xIsNext ? "X" : "O";
-    this.setState({
+    if (this.state.squareNumber < 6) {
+      const history = this.state.history.slice(0, this.state.stepNumber + 1);
+      const current = history[history.length - 1];
+      const squares = current.squares.slice();
+      const num = this.state.squareNumber + 1;
+
+      if (calculateWinner(squares) || squares[i]) {
+        return;
+      }
+   
+      squares[i] = this.state.xIsNext ? "X" : "O";
+    
+      this.setState({
       history: history.concat([
         {
           squares: squares
         }
       ]),
       stepNumber: history.length,
-      xIsNext: !this.state.xIsNext
-    });
+      xIsNext: !this.state.xIsNext,
+      squareNumber: num
+      });
+    }
+    else {
+      this.setState({
+        doMove: true,
+        deleteSquare: i
+      });
+    }
+  }
+
+  moveSquare(oldSquare, newSquare) {
+    const history = this.state.history.slice(0, this.state.stepNumber + 1);
+    const current = history[history.length - 1];
+    const squares = current.squares.slice();
+
+    if (calculateWinner(squares) || squares[newSquare]) {
+      return;
+    }
+      
+
+    squares[newSquare] = this.state.xIsNext ? "X" : "O";
+    
+    this.setState({
+    history: history.concat([
+      {
+        squares: squares
+      }
+     ]),
+       stepNumber: history.length,
+       xIsNext: !this.state.xIsNext,
+     });
   }
 
   jumpTo(step) {

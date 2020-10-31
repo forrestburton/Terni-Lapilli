@@ -94,21 +94,18 @@ class Game extends React.Component {
 
   //set old square to null and update new square 
   moveSquare(oldSquare, newSquare) {
-    
-    alert("hi");
-    this.setState({
-
-       });
-    /*
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
 
     if (calculateWinner(squares) || squares[newSquare]) {
+      this.setState({
+         doMove: false
+      });
       return;
     }
       
-
+    squares[oldSquare] = null;
     squares[newSquare] = this.state.xIsNext ? "X" : "O";
     
     this.setState({
@@ -119,8 +116,9 @@ class Game extends React.Component {
      ]),
        stepNumber: history.length,
        xIsNext: !this.state.xIsNext,
+       doMove: false
      });
-     */
+     
   }
 
   jumpTo(step) {

@@ -100,11 +100,38 @@ class Game extends React.Component {
     }
   }
 
-  //set old square to null and update new square 
   moveSquare(oldSquare, newSquare) {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
+    const currentSquare = this.state.xIsNext ? "X" : "O";
+
+    if (squares[4] === currentSquare) {
+      const squaresCopy = current.squares.slice();
+      if (squaresCopy[newSquare] ==  null) {
+        squaresCopy[oldSquare] = null;
+        squaresCopy[newSquare] = currentSquare;
+        if (calculateWinner(squaresCopy)) {
+          this.setState({
+            history: history.concat([
+              {
+                squares: squaresCopy
+              }
+            ]),
+            stepNumber: history.length
+          });
+          return;
+        }
+        else {
+          if (oldSquare !== 4) {
+            this.setState({
+              doMove: false
+            });
+            return;
+          }
+        }
+      }
+    }
 
     if (calculateWinner(squares) || squares[newSquare]) {
       this.setState({
@@ -128,6 +155,7 @@ class Game extends React.Component {
      });
      
   }
+
 
   jumpTo(step) {
     this.setState({
